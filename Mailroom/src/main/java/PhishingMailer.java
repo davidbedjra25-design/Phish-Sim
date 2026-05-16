@@ -47,7 +47,7 @@ public class PhishingMailer {
             Message message = new MimeMessage(session);
             message.setFrom(new InternetAddress("it-support@company-portal.com"));
             message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(targetEmail));
-            message.setSubject("URGENT:: Mandatory Password Rotation Required");
+            message.setSubject("URGENT:: Mandatory Password Reset Required");
 
             // The body of the email containing your hidden link
             String emailBody = "";
