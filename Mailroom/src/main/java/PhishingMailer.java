@@ -2,6 +2,7 @@ import jakarta.mail.*;
 import jakarta.mail.internet.*;
 import java.util.Properties;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
 public class PhishingMailer {
     public static void main(String[] args) {
@@ -49,10 +50,20 @@ public class PhishingMailer {
             message.setSubject("URGENT:: Mandatory Password Rotation Required");
 
             // The body of the email containing your hidden link
-            String emailBody = "<h2>Security Alert</h2>"
-                    + "<p>Hello " + targetName + ",</p>"
-                    + "<p>Your corporate password expires in 2 hours. Please update it immediately to avoid account lockout.</p>"
-                    + "<p><a href='" + trackingLink + "' style='padding: 10px; background: red; color: white; text-decoration: none;'>Update Password Now</a>";
+            String emailBody = "";
+            try (InputStream templateStream = PhishingMailer.class.getClassLoader().getResourceAsStream("template.html")) {
+                if (templateStream == null) {
+                    System.out.println("Error: Could not find template.html in resources.");
+                    return;
+                }
+                emailBody = new String(templateStream.readAllBytes(),StandardCharsets.UTF_8);
+            }
+            catch(Exception e) {
+                System.out.println("Error reading html template: " + e.getMessage());
+                return;
+            }
+            emailBody = emailBody.replace("{{TARGET_NAME}}", targetName);
+            emailBody = emailBody.replace("{{TRACKING_LINK}}", trackingLink);
 
             message.setContent(emailBody, "text/html; charset=utf-8");
 
