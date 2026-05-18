@@ -1,0 +1,149 @@
+2026-05-14T05:01:30.751Z [INFO] ----------------------invoke appmod-report-event----------------------
+2026-05-14T05:01:30.756Z [INFO] [Tool.invoke]({name: appmod-report-event, modelId: auto, input: {
+  "projectPath": "c:\\Users\\HP\\Desktop\\Projects\\Phish-Sim\\Mailroom",
+  "event": "precheckCompleted",
+  "phase": "precheck",
+  "status": "succeeded",
+  "details": {
+    "baseJdkVersion": "17",
+    "targetVersion": "Java 21"
+  }
+}}).
+2026-05-14T05:01:30.759Z [INFO] [Tool.invoke] do invoke.
+2026-05-14T05:01:30.773Z [INFO] Project c:\Users\HP\Desktop\Projects\Phish-Sim\Mailroom is a maven project, try to get java version from pom.xml
+2026-05-14T05:01:30.779Z [INFO] [Tool.invoke]({result: {
+  "message": "Event 'precheckCompleted' reported!\nSession ID: 20260514050130,\nSession Dir: c:\\Users\\HP\\Desktop\\Projects\\Phish-Sim\\Mailroom\\.github\\java-upgrade\\20260514050130"
+}}).
+2026-05-14T05:01:30.795Z [INFO] ----------------------invoked appmod-report-event----------------------
+2026-05-14T05:01:30.831Z [INFO] Project java version: 17
+2026-05-14T05:01:30.833Z [INFO] Maven project detected.
+2026-05-14T05:01:30.833Z [INFO] Build tool type: mvn
+2026-05-14T05:01:32.872Z [INFO] JDK: {
+  "name": "java",
+  "path": "C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.12.7-hotspot\\bin",
+  "version": "17"
+}
+2026-05-14T05:01:32.936Z [INFO] Build tool: {
+  "name": "mvn",
+  "path": "C:\\apache-maven-3.9.15\\bin",
+  "version": "",
+  "source": "PATH"
+}
+2026-05-14T05:01:32.940Z [INFO] Project config: {
+  "buildTool": {
+    "path": "C:\\apache-maven-3.9.15\\bin",
+    "name": "mvn",
+    "version": "",
+    "source": "PATH"
+  },
+  "jdk": {
+    "path": "C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.12.7-hotspot\\bin",
+    "name": "java",
+    "version": "17"
+  },
+  "name": "Mailroom",
+  "dir": "c:\\Users\\HP\\Desktop\\Projects\\Phish-Sim\\Mailroom"
+}
+2026-05-14T05:01:34.320Z [INFO] ---------------------prepare appmod-report-event----------------------
+2026-05-14T05:01:34.321Z [INFO] [Tool.prepareInvocation]({name: appmod-report-event, input: {
+  "sessionId": "20260514050130",
+  "projectPath": "c:\\Users\\HP\\Desktop\\Projects\\Phish-Sim\\Mailroom",
+  "event": "planGenerationStarted",
+  "phase": "plan",
+  "status": "succeeded"
+}}).
+2026-05-14T05:01:34.321Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-05-14T05:01:34.322Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "Report upgrade event"
+}}).
+2026-05-14T05:01:34.322Z [INFO] ----------------------prepared appmod-report-event----------------------
+2026-05-14T05:01:34.369Z [INFO] ----------------------invoke appmod-report-event----------------------
+2026-05-14T05:01:34.369Z [INFO] [Tool.invoke]({name: appmod-report-event, modelId: auto, input: {
+  "sessionId": "20260514050130",
+  "projectPath": "c:\\Users\\HP\\Desktop\\Projects\\Phish-Sim\\Mailroom",
+  "event": "planGenerationStarted",
+  "phase": "plan",
+  "status": "succeeded"
+}}).
+2026-05-14T05:01:34.370Z [INFO] [Tool.invoke] do invoke.
+2026-05-14T05:01:34.372Z [INFO] [Tool.invoke]({result: {
+  "message": "Event 'planGenerationStarted' reported!\nSession ID: 20260514050130,\nSession Dir: c:\\Users\\HP\\Desktop\\Projects\\Phish-Sim\\Mailroom\\.github\\java-upgrade\\20260514050130"
+}}).
+2026-05-14T05:01:34.372Z [INFO] ----------------------invoked appmod-report-event----------------------
+2026-05-14T05:01:34.903Z [INFO] ---------------------prepare appmod-list-jdks----------------------
+2026-05-14T05:01:34.904Z [INFO] [Tool.prepareInvocation]({name: appmod-list-jdks, input: {
+  "sessionId": "20260514050130"
+}}).
+2026-05-14T05:01:34.904Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-05-14T05:01:34.905Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "List jdks"
+}}).
+2026-05-14T05:01:34.906Z [INFO] ----------------------prepared appmod-list-jdks----------------------
+2026-05-14T05:01:34.966Z [INFO] ----------------------invoke appmod-list-jdks----------------------
+2026-05-14T05:01:34.966Z [INFO] [Tool.invoke]({name: appmod-list-jdks, modelId: auto, input: {
+  "sessionId": "20260514050130"
+}}).
+2026-05-14T05:01:34.968Z [INFO] [Tool.invoke] do invoke.
+2026-05-14T05:01:35.024Z [INFO] [Tool.invoke]({result: {
+  "message": "We found following jdks in your system:\n\n1. Java 17.0.12\n   📁 Path: C:\\Program Files\\Eclipse Adoptium\\jdk-17.0.12.7-hotspot\\bin\n   🏷️ Source: PATH,JAVA_HOME\n\n2. Java 17.0.16\n   📁 Path: C:\\Users\\HP\\.jdks\\ms-17.0.16\\bin\n   🏷️ Source: others\n\n3. Java 17.0.17\n   📁 Path: C:\\Users\\HP\\.jdks\\ms-17.0.17\\bin\n   🏷️ Source: others\n\n4. Java 21.0.8\n   📁 Path: C:\\Users\\HP\\.jdks\\ms-21.0.8\\bin\n   🏷️ Source: others\n\nTotal: 4 JDK installation(s) found"
+}}).
+2026-05-14T05:01:35.025Z [INFO] ----------------------invoked appmod-list-jdks----------------------
+2026-05-14T05:01:35.067Z [INFO] ---------------------prepare appmod-list-mavens----------------------
+2026-05-14T05:01:35.067Z [INFO] [Tool.prepareInvocation]({name: appmod-list-mavens, input: {
+  "sessionId": "20260514050130",
+  "includeVersion": true
+}}).
+2026-05-14T05:01:35.068Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-05-14T05:01:35.068Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "List mavens"
+}}).
+2026-05-14T05:01:35.069Z [INFO] ----------------------prepared appmod-list-mavens----------------------
+2026-05-14T05:01:35.120Z [INFO] ----------------------invoke appmod-list-mavens----------------------
+2026-05-14T05:01:35.120Z [INFO] [Tool.invoke]({name: appmod-list-mavens, modelId: auto, input: {
+  "sessionId": "20260514050130",
+  "includeVersion": true
+}}).
+2026-05-14T05:01:35.121Z [INFO] [Tool.invoke] do invoke.
+2026-05-14T05:01:36.190Z [INFO] [Tool.invoke]({result: {
+  "message": "We found following maven installations in your system:\n\n1. Maven 3.9.15\n   📁 Path: C:\\apache-maven-3.9.15\\bin\n   🏷️ Source: PATH\n\nTotal: 1 Maven installation(s) found"
+}}).
+2026-05-14T05:01:36.191Z [INFO] ----------------------invoked appmod-list-mavens----------------------
+2026-05-14T05:02:55.370Z [INFO] ---------------------prepare appmod-report-event----------------------
+2026-05-14T05:02:55.394Z [INFO] [Tool.prepareInvocation]({name: appmod-report-event, input: {
+  "sessionId": "20260514050130",
+  "projectPath": "c:\\Users\\HP\\Desktop\\Projects\\Phish-Sim\\Mailroom",
+  "event": "planReviewed",
+  "phase": "plan",
+  "status": "succeeded"
+}}).
+2026-05-14T05:02:55.422Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-05-14T05:02:55.431Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "Report upgrade event"
+}}).
+2026-05-14T05:02:55.434Z [INFO] ----------------------prepared appmod-report-event----------------------
+2026-05-14T05:02:56.489Z [INFO] ----------------------invoke appmod-report-event----------------------
+2026-05-14T05:02:56.493Z [INFO] [Tool.invoke]({name: appmod-report-event, modelId: auto, input: {
+  "sessionId": "20260514050130",
+  "projectPath": "c:\\Users\\HP\\Desktop\\Projects\\Phish-Sim\\Mailroom",
+  "event": "planReviewed",
+  "phase": "plan",
+  "status": "succeeded"
+}}).
+2026-05-14T05:02:56.522Z [INFO] [Tool.invoke] do invoke.
+2026-05-14T05:02:56.544Z [INFO] [Tool.invoke]({result: {
+  "message": "Event 'planReviewed' reported!\nSession ID: 20260514050130,\nSession Dir: c:\\Users\\HP\\Desktop\\Projects\\Phish-Sim\\Mailroom\\.github\\java-upgrade\\20260514050130"
+}}).
+2026-05-14T05:02:56.547Z [INFO] ----------------------invoked appmod-report-event----------------------
+2026-05-14T05:03:59.926Z [INFO] ---------------------prepare appmod-confirm-upgrade-plan----------------------
+2026-05-14T05:03:59.944Z [INFO] [Tool.prepareInvocation]({name: appmod-confirm-upgrade-plan, input: {
+  "sessionId": "20260514050130"
+}}).
+2026-05-14T05:03:59.952Z [INFO] [Tool.prepareInvocation] do prepare invocation.
+2026-05-14T05:03:59.967Z [INFO] [Tool.prepareInvocation]({result: {
+  "invocationMessage": "Review [upgrade plan](file:///c:/Users/HP/Desktop/Projects/Phish-Sim/Mailroom/.github/java-upgrade/20260514050130/plan.md)",
+  "confirmationMessages": {
+    "title": "Plan generated",
+    "message": "Please review the generated plan and make any necessary adjustments before proceeding. You can modify the generated [`plan.md`](file:///c:/Users/HP/Desktop/Projects/Phish-Sim/Mailroom/.github/java-upgrade/20260514050130/plan.md) directly."
+  }
+}}).
+2026-05-14T05:03:59.973Z [INFO] ----------------------prepared appmod-confirm-upgrade-plan----------------------
