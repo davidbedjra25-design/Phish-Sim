@@ -3,7 +3,7 @@ const app = express();
 const path = require('path');
 
 // Route: When someone visits 'localhost:3000/phish'
-app.get('/phish', (req, res) => {
+app.get('/clicked', (req, res) => {
 
     //getting the username
     const targetName = req.query.user;
