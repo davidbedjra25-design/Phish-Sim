@@ -3,6 +3,8 @@ import jakarta.mail.internet.*;
 import java.util.Properties;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
 
 public class PhishingMailer {
     public static void main(String[] args) {
@@ -38,42 +40,69 @@ public class PhishingMailer {
             }
         });
 
-        String targetName = "Alice";
-        String targetEmail = "alice@company.com";
-        String trackingLink = "http://localhost:3000/clicked?target=" + targetName;
+        // String targetName = "Alice";
+        // String targetEmail = "alice@company.com";
+        // String trackingLink = "http://localhost:3000/clicked?target=" + targetName;
 
         try {
-            // 4. Draft the Phishing Email
-            Message message = new MimeMessage(session);
-            message.setFrom(new InternetAddress("it-support@company-portal.com"));
-            message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(targetEmail));
-            message.setSubject("URGENT:: Mandatory Password Reset Required");
-
-            // The body of the email containing your hidden link
-            String emailBody = "";
-            try (InputStream templateStream = PhishingMailer.class.getClassLoader().getResourceAsStream("template.html")) {
-                if (templateStream == null) {
-                    System.out.println("Error: Could not find template.html in resources.");
-                    return;
+            //Preload the HTM: template once so we don't read the file over and over
+            String template = "";
+            try(InputStream templateStream = PhishingMailer.class.getClassLoader().getResourceAsStream("template.html")) {
+                if(templateStream != null) {
+                    template = new String(templateStream.readAllBytes(), StandardCharsets.UTF_8);
                 }
-                emailBody = new String(templateStream.readAllBytes(),StandardCharsets.UTF_8);
             }
             catch(Exception e) {
                 System.out.println("Error reading html template: " + e.getMessage());
                 return;
             }
-            emailBody = emailBody.replace("{{TARGET_NAME}}", targetName);
-            emailBody = emailBody.replace("{{TRACKING_LINK}}", trackingLink);
 
-            message.setContent(emailBody, "text/html; charset=utf-8");
+            //Opening the CSV Database
+            InputStream targetStream = PhishingMailer.class.getClassLoader().getResourceAsStream("targets.csv");
+            if(targetStream == null) {
+                System.out.println("Error: Could not find targets.csv");
+                return;
+            }
 
-            // 5. Send the Email
-            Transport.send(message);
-            System.out.println("Simulated phishing email sent successfully to Mailtrap!");
+            BufferedReader reader = new BufferedReader(new InputStreamReader(targetStream, StandardCharsets.UTF_8));
+            String line;
 
+            // Loop through the CSV file line by line
+            while((line = reader.readLine()) != null) {
+                // Splitting the comma-separated line
+                String[] parts = line.split(",");
+                if(parts.length < 2) {
+                    continue;   //Skipping any blank or broken lines
+                }
+
+                PhishingTarget target = new PhishingTarget(parts[0].trim(), parts[1].trim());
+
+                String trackingLink = "http://localhost:3000/clicked?target=" + target.name();
+
+                // 4. Draft the Phishing Email
+                Message message = new MimeMessage(session);
+                message.setFrom(new InternetAddress("it-support@company-portal.com"));
+                message.setRecipients(Message.RecipientType.TO, InternetAddress.parse(target.email()));
+                message.setSubject("URGENT:: Mandatory Password Reset Required");
+
+                // Inject the target's specific data into the HTML
+                String emailBody = template.replace("{{TARGET_NAME}}", target.name());
+                emailBody = emailBody.replace("{{TRACKING_LINK}}", trackingLink);
+
+                 message.setContent(emailBody, "text/html; charset=utf-8");
+
+                // 5. Send the Email
+                Transport.send(message);
+                System.out.println("Simulated phishing email sent successfully to Mailtrap!");
+
+                Thread.sleep(10000); // Adding a short delay between emails to avoid getting flagged by the server for spamming
+            }
+           System.out.println("All the targets have been successfully processed!");
+           reader.close();
         }
 
-        catch (MessagingException me) {
+        catch (Exception me) {
+            System.out.println("An error occurred while going through the loop:");
             me.printStackTrace();
         }
         
