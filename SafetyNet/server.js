@@ -37,7 +37,7 @@ app.get('/clicked', (req, res) => {
     //getting the username
     const targetName = req.query.user || "Unknown Target";
 
-    const currentTime = new Date().toLocateTimeString(); // Fixed date/ time typos
+    const currentTime = new Date().toLocaleTimeString(); // Fixed date/ time typos
 
     const logs = readLogs();
     
