@@ -1,0 +1,1 @@
+public record PhishingTarget(String name, String email) {}

@@ -1,0 +1,12 @@
+<<<<<<< HEAD
+# --- Ignore these in Safety Net ---
+SafetyNet/node_modules/
+SafetyNet/.env
+
+# --- Ignore these in Mailroom ---
+Mailroom/target/
+Mailroom/.vscode/
+Mailroom/src/main/resources/config.properties
+=======
+node_modules/
+>>>>>>> feature/safety-net
