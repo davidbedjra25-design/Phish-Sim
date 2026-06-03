@@ -17,26 +17,55 @@ let currentCampaignId = null;
 // Telemetry Link: Triggered when a tracking URL is hit
 app.get('/clicked', async (req, res, next) => {
   try {
-    const targetName = req.query.user || "Unknown Target";
+    const targetName = req.query.target || "Unknown Target";
     await dbOperations.addTarget(currentCampaignId, targetName);
 
     console.log(`[TELEMETRY] Compromise captured: ${targetName}`);
 
     // Educational training intervention response
     res.send(`
-      <div style="font-family: sans-serif; max-width: 500px; margin: 50px auto; padding: 30px; border: 2px solid #e74c3c; border-radius: 8px; text-align: center;">
-        <h1 style="color: #e74c3c; margin-bottom: 10px;">⚠️ Security Training Awareness</h1>
-        <p style="font-size: 16px; color: #333; line-height: 1.5;">
-          You interacted with a simulated link. Don't worry—this is an internal safety check to help improve your phishing detection habits!
-        </p>
-        <hr style="border: 0; border-top: 1px solid #eee; margin: 20px 0;">
-        <p style="font-size: 14px; color: #666; text-align: left;">
-          <strong>Quick tips to stay sharp:</strong><br>
-          • Check sender domains closely.<br>
-          • Inspect hidden link targets by hovering over them.<br>
-          • Be cautious of urgent language demanding action.
-        </p>
-      </div>
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+        <meta charset="UTF-8">
+        <title>Phishing Simulation Alert</title>
+        <style>
+          body { font-family: 'Sagoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f8f9fa; color: #333; line-height: 1.6; padding: 40px 20px; }
+          .container { max-width: 650px; margin: 0 auto; background: white; padding: 40px; border-radius: 10px; border-top: 6px solid #e74c3c; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+          h1 { color: #e74c3c; margin-top: 0; font-size: 28px; }
+          .alert-box { background-color: #fdf0ed; border-left: 4px solid #e74c3c; padding: 15px; margin: 20px 0; border-radius: 4px; font-size: 16px;}
+          .tips { background-color: #e8f4f8; padding: 25px; border-radius: 8px; margin-top: 30px; }
+          .tips h3 { color: #2980b9; margin-top: 0; font-size: 20px;}
+          ul { padding-left: 20px; }
+          li {margin-bottom: 12px; }
+          code { background: #eee; padding: 2px 6px; border-radius: 4px; color: #d35400; font-weight: bold;}
+        </style>
+      </head>
+      <body>
+        <div class="container">
+          <h1>Oops! You clicked a simulated phishing line.</h1>
+
+          <div class="alert-box">
+            <strong>Don't panic!</strong> This was an authorized security test conducted by your IT department. Your computer is safe and no data was compromised.
+          </div>
+
+          <p>You recently received an email claiming to be an <strong>"URGENT Mandatory Password Reset"</strong>. In the real world, clicking the link in that email could have allowed cybercriminals to steal your credentials and bypass our security.</p>
+
+          <div class="tips">
+              <h3>How to spot this next time:</h3>
+              <ul>
+                  <li><strong>Check the Sender:</strong> The email came from <code>it-support@company-portal.com</code>. Always verify that the domain perfectly matches our actual company domain. Cybercriminals often use domains that look "close enough".</li>
+                  <li><strong>Beware of Urgency:</strong> Cybercriminals use words like "URGENT", "Mandatory", or "Action Required" to make you panic and click without thinking. Always slow down.</li>
+                  <li><strong>Hover Before You Click:</strong> If you hovered your mouse over the link in the email, you would have seen it led to an unrecognized tracking server, not the real login page.</li>
+              </ul>
+          </div>
+
+          <p style="text-align: center; margin-top: 30px; font-size: 14px; colorL #7f8c8d; font-weight: bold;">
+            Security is everyone's responsibility. Stay vigilant!
+          </p>
+        </div>
+      </body>
+      </html>
     `);
   } catch (err) {
     next(err);
@@ -49,9 +78,9 @@ app.get('/api/analytics', async (req, res, next) => {
     const analytics = await dbOperations.getAnalytics(currentCampaignId);
     const timeline = await dbOperations.getClickTimeline(currentCampaignId);
     
-    const clickRate = analytics.total_targets > 0 
-      ? ((analytics.total_clicked / analytics.total_targets) * 100).toFixed(2)
-      : 0;
+    const rawRate = analytics.total_targets > 0 ? ((analytics.total_clicked / analytics.total_targets) * 100) : 0;
+    //Cap the percentage at a maximum of 100%
+    const clickRate = Math.min(rawRate, 100).toFixed(2);
 
     res.json({
       total_clicked: analytics.total_clicked,
@@ -291,16 +320,26 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: "Internal processing disruption inside tracking pipeline" });
 });
 
-app.get('/api/campaign-start', (req, res) => {
+app.get('/api/campaign-start', async (req, res) => {
   //Extracting the number of emails sent from the URL
   const totalSent = req.query.total;
 
   if(totalSent) {
     console.log(`[SYSTEM ALERT] Java Engine reported ${totalSent} emails dispatched!`);
 
-    // Sending a 200 OK success code back to Java so the email dispatcher knows Node.js successfully caught the number of emails
-    res.status(200).send("Metrics received successfully.");
+    try {
+      // fixes the percentage math on the dashboard
+      await dbOperations.setTotalTargets(currentCampaignId, parseInt(totalSent, 10));
+      // Sending a 200 OK success code back to Java so the email dispatcher knows Node.js successfully caught the number of emails
+      res.status(200).send("Metrics received successfully.")
+    }
+    catch(err) {
+      console.error("[ERROR] Could not save total targets to database:", err);
+      res.status(500).send("Database error");
+    }
+
   }
+
   else {
     res.status(400).send("Missing total parameter.");
   }
