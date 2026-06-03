@@ -5,6 +5,8 @@ import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 
 public class PhishingMailer {
     public static void main(String[] args) {
@@ -65,6 +67,8 @@ public class PhishingMailer {
             }
 
             BufferedReader reader = new BufferedReader(new InputStreamReader(targetStream, StandardCharsets.UTF_8));
+            int totalEmailsSent = 0; //Setting up the number of emails sent
+
             String line;
 
             // Loop through the CSV file line by line
@@ -95,8 +99,11 @@ public class PhishingMailer {
                 Transport.send(message);
                 System.out.println("Simulated phishing email sent successfully to Mailtrap!");
 
+                totalEmailsSent++; //incrementing the count for the number of emails sent
+
                 Thread.sleep(10000); // Adding a short delay between emails to avoid getting flagged by the server for spamming
             }
+            broadcastCampaignStart(totalEmailsSent);
            System.out.println("All the targets have been successfully processed!");
            reader.close();
         }
@@ -107,4 +114,27 @@ public class PhishingMailer {
         }
         
     }
+
+    private static void broadcastCampaignStart(int totalSent) {
+        try {
+            //Telling the Node.js server exactly how many emails were being sent
+            URL url = new URL("http://localhost:3000/api/campaign-start?total=" + totalSent);
+            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+            connection.setRequestMethod("GET");
+
+            // sending the request
+            int responseCode = connection.getResponseCode();
+            
+            if(responseCode == 200) {
+                System.out.println("[SUCCESS] Node.js dashboard notified. Total targets: " + totalSent);
+            }
+            else {
+                System.out.println("[WARNING] Dashboard didn't respond correctly. Is Node.js running?");
+            }
+        }
+        catch(Exception e) {
+            System.out.println("[ERROR] Could not connect to Node.js dashboard: " + e.getMessage());
+        }
+    }
+
 }

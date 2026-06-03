@@ -291,6 +291,21 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: "Internal processing disruption inside tracking pipeline" });
 });
 
+app.get('/api/campaign-start', (req, res) => {
+  //Extracting the number of emails sent from the URL
+  const totalSent = req.query.total;
+
+  if(totalSent) {
+    console.log(`[SYSTEM ALERT] Java Engine reported ${totalSent} emails dispatched!`);
+
+    // Sending a 200 OK success code back to Java so the email dispatcher knows Node.js successfully caught the number of emails
+    res.status(200).send("Metrics received successfully.");
+  }
+  else {
+    res.status(400).send("Missing total parameter.");
+  }
+})
+
 app.listen(3000, () => {
   console.log("[ONLINE] Report metrics branch running at http://localhost:3000/targets");
 });
